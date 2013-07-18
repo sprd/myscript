@@ -82,7 +82,7 @@ shark_build(){
 	source build/envsetup.sh >> $LOG_FILE
 	lunch 29 >> $LOG_FILE
 
-	make >> $LOG_FILE
+	make -j 32 >> $LOG_FILE
 
 	echo "Build end at `date`" >> $LOG_FILE
 }
@@ -109,8 +109,13 @@ trout_out_collect(){
 	tar zcf $WIFI_TGZ Trout_WIFI --exclude=.repo --exclude=.git
 }
 
+IMG_LIST="fdl1.bin fdl2.bin u-boot.bin u-boot-spl-16k.bin boot.img recovery.img system.img userdata.img"
 shark_out_collect(){
 	cd $SRC_DIR
+
+	for i in $IMG_LIST; do
+		find $SRC_DIR/out/target -type f -iname $i -exec cp {} $OUT_DIR \;
+	done
 	
 	touch $OUT_DIR/build_complete
 }
