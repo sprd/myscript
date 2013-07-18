@@ -1,0 +1,108 @@
+#!/bin/bash
+
+platform=sp6820gb_trout2
+
+usage(){
+	echo 
+	echo "Usage:"
+	echo "	mm.sh [wifi|fm|bt]"
+	echo "	default: wifi"
+	echo "	Author: Eason "
+	echo 
+}
+
+compile_wifi(){
+	compile_md5
+	echo "Compile wifi..."
+
+	#Compile
+	./mk -o=2sim $platform u ko 3rdparty/wifi/Trout_WIFI
+
+	#Remove debug information
+	#arm-eabi-strip -d 3rdparty/wifi/Trout/special/mac/itm_wifi.ko
+
+	#Confirm compile date
+	ls -l 3rdparty/wifi/Trout_WIFI/special/*.ko
+
+	cp 3rdparty/wifi/Trout_WIFI/special/*.ko .
+}
+
+compile_fm(){
+	compile_md5
+	echo "Compile fm..."
+	
+	./mk -o=2sim $platform u ko 3rdparty/fm/Trout_FM
+	
+	cp 3rdparty/fm/Trout_FM/special/driver/trout_fm.ko .
+}
+
+compile_md5(){
+	echo "Compile md5..."
+
+	./mk -o=2sim $platform genmd5
+}
+
+compile_pac(){
+	echo "Compile pac..."
+
+	./mk -o=2sim $platform n
+}
+
+compile_bt(){
+	compile_md5
+	echo "Compile bt..."
+
+	./mk -o=2sim $platform u ko 3rdparty/bluetooth/Trout_BT
+
+	cp 3rdparty/bluetooth/Trout_BT/special/driver/trout_bt.ko .
+}
+
+params=$#
+module=$1
+
+do_compile(){
+	if [ $module = "wifi" ]
+	then
+		compile_wifi
+	fi
+	
+	if [ $module = "fm" ]
+	then
+		compile_fm
+	fi
+
+	if [ $module = "bt" ]
+	then
+		compile_bt
+	fi
+
+	if [ $module = "md5" ]
+	then
+		compile_md5
+	fi
+
+	if [ $module = "pac" ]
+	then 
+		compile_pac
+	fi
+
+	if [ $module = "all" ]
+	then
+		compile_wifi
+		compile_fm
+		compile_bt
+	fi
+}
+
+if [ $params -gt 1 ]
+then
+	usage
+fi
+
+if [ $params -eq 1 ]
+then
+	do_compile
+else
+	compile_wifi
+fi
+

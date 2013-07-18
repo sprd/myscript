@@ -1,0 +1,16 @@
+#!/bin/bash
+. /etc/profile
+. ~/.profile
+
+REPO=/usr/bin/repo
+BASE_DIR=/opt/repo-mirror
+TROUT=$BASE_DIR/sprdroid2.3.5_vlx_p20.01_ps7_trout
+SHARK=$BASE_DIR/sprdroid4.1_3.4
+TROUT_LOG=$BASE_DIR/trout_sync.log
+SHARK_LOG=$BASE_DIR/shark_sync.log
+
+cd $TROUT
+$REPO sync > $TROUT_LOG
+
+cd $SHARK
+$REPO sync > $SHARK_LOG

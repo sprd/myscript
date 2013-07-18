@@ -1,0 +1,33 @@
+#!/bin/bash
+
+ko=$1
+DEST_DIR=/system/lib/modules/
+
+do_push(){
+	echo 
+	echo "push $1 to $DEST_DIR"
+	adb push $1 $DEST_DIR 
+	if [ $? -eq 0 ]
+	then
+		echo "push success."
+	else
+		echo "push failed!"
+	fi
+
+}
+
+push_all(){
+	do_push trout_sdio.ko
+	do_push trout_fm.ko
+	do_push itm_sta.ko
+	do_push itm_ap.ko
+}
+
+if [ $# -gt 0 ]
+then
+	do_push $ko
+	exit 
+fi
+
+push_all
+

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo "Trout Version:"
+
+echo "=========== PAC ============"
+cat vendor/sprd/product/sprdroid_base.mk | grep '^BUILD_NUMBER'
+
+echo
+echo "=========== FM ============"
+/sbin/modinfo 3rdparty/fm/Trout_FM/special/driver/trout_fm.ko | grep '^version'
+
+echo
+echo "=========== SDIO ============"
+/sbin/modinfo 3rdparty/wifi/Trout_WIFI/special/trout_sdio.ko | grep '^version' 
+
+echo
+echo "=========== WIFI ============"
+/sbin/modinfo 3rdparty/wifi/Trout_WIFI/special/itm_sta.ko | grep '^version'
+
