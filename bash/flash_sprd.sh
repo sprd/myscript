@@ -6,8 +6,8 @@
 # Function: to upgrade firmware of Spreadtrum phone.
 ###############################################################
 
-IMGS_DIR=`pwd`/out/target/product
-DEPTH=2
+IMGS_DIR=`pwd`
+DEPTH=1
 UBOOT_IMG=u-boot-256M.bin
 KERNEL_IMG=boot.img
 RECOVERY_IMG=recovery.img
@@ -39,7 +39,7 @@ usage()
 flash_partition()
 {
 	if [[ "${FLASH_ALL}" -eq 1 || "$1" -eq 1 ]]; then
-		IMG_PATH=`find ${IMGS_DIR} -type f -iname $3`
+		IMG_PATH=`find ${IMGS_DIR} -maxdepth ${DEPTH} -type f -iname $3`
 		[ -n "${IMG_PATH}" ] && (echo "---- Programming $3 ... "; fastboot flash $2 ${IMG_PATH}; echo)
 	fi
 }
