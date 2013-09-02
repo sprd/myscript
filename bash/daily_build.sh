@@ -80,7 +80,7 @@ shark_build(){
 	rm -rf out
 
 	source build/envsetup.sh >> $LOG_FILE
-	lunch 29 >> $LOG_FILE
+	lunch $COMBO >> $LOG_FILE
 
 	make -j 32 >> $LOG_FILE
 
@@ -125,7 +125,7 @@ shark_out_collect(){
 	rm -f `dirname $OUT_DIR`/latest
 	ln -s $OUT_DIR `dirname $OUT_DIR`/latest
 	
-	touch $OUT_DIR/build_complete
+	touch $OUT_DIR/.build_complete
 }
 
 NO_ARGS=0
@@ -134,12 +134,13 @@ if [ $# -eq $NO_ARGS ]; then
 	echo
 fi
 
-while getopts ":shd:o:p:" opt; do
+while getopts ":shd:o:p:c:" opt; do
 	case $opt in
 	s ) BUILD_SYNC=1;;
 	d ) SRC_DIR=$OPTARG;;
 	o ) OUT_DIR=$OPTARG;;
 	p ) PLATFORM=$OPTARG;;
+	c ) COMBO=$OPTARG;;
 	h ) usage;;
 	* ) echo "Unimplemented option chosen.";; # DEFAULT
 	esac
