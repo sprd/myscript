@@ -123,7 +123,7 @@ shark_out_collect(){
 		find $SRC_DIR/out/target -type f -iname $i -exec cp {} $OUT_DIR \;
 	done
 	rm -f `dirname $OUT_DIR`/latest
-	ln -s $OUT_DIR `dirname $OUT_DIR`/latest
+	ln -s `basename $OUT_DIR` `dirname $OUT_DIR`/latest
 	
 	touch $OUT_DIR/.build_complete
 }
